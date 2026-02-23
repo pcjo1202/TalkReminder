@@ -1,9 +1,9 @@
-import { auth } from "@/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
 
 const publicPaths = ["/", "/login"];
 
-export default auth((req) => {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const isPublic = publicPaths.some(
@@ -14,14 +14,16 @@ export default auth((req) => {
     return NextResponse.next();
   }
 
-  if (!req.auth) {
+  const session = getSessionCookie(req);
+
+  if (!session) {
     const loginUrl = new URL("/login", req.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],

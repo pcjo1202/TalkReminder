@@ -6,6 +6,7 @@ import {
   FileText,
   ScrollText,
 } from "lucide-react";
+import { headers } from "next/headers";
 import { auth } from "@/auth";
 import { UserMenu } from "@/features/auth-actions";
 import {
@@ -30,7 +31,9 @@ const navItems = [
 ];
 
 export async function AppSidebar() {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   if (!session?.user) return null;
 

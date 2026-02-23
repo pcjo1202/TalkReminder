@@ -23,7 +23,7 @@ pnpm coverage  # 커버리지
 - **Tailwind CSS v4** — CSS import 방식 (`@import "tailwindcss"`), JS 설정 없음
 - **shadcn/ui** — new-york 스타일, neutral, CSS 변수. `src/shared/ui/`에 위치
 - **Supabase** — PostgreSQL + 실시간 + 스토리지
-- **NextAuth.js (Auth.js v5)** — 인증
+- **better-auth** — 인증 (소셜 로그인, 세션 관리)
 - **Vitest + @testing-library/react** — 테스트
 
 ## 아키텍처 (FSD)
@@ -60,6 +60,6 @@ src/
 - [개발 워크플로 (Skills 호출 순서)](docs/workflow.md)
 - [아키텍처 (FSD 상세)](docs/architecture.md)
 - [데이터베이스 (Supabase)](docs/database.md)
-- [인증 (NextAuth.js)](docs/auth.md)
+- [인증 (better-auth)](docs/auth.md)
 - [테스트 (Vitest)](docs/testing.md)
 - [스타일링 (Tailwind v4)](docs/styling.md)

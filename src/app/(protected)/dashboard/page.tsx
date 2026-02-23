@@ -1,7 +1,10 @@
+import { headers } from "next/headers";
 import { auth } from "@/auth";
 
 export default async function DashboardPage() {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   return (
     <div>
