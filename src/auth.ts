@@ -1,23 +1,25 @@
-import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-import GitHub from "next-auth/providers/github";
-import { SupabaseAdapter } from "@auth/supabase-adapter";
+import { betterAuth } from "better-auth";
+import { nextCookies } from "better-auth/next-js";
+import { Pool } from "pg";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: SupabaseAdapter({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    secret: process.env.SUPABASE_SECRET_KEY!,
+export const auth = betterAuth({
+  database: new Pool({
+    connectionString: process.env.DATABASE_URL!,
+    ssl: { rejectUnauthorized: false },
   }),
-  providers: [Google, GitHub],
-  pages: {
-    signIn: "/login",
-  },
-  callbacks: {
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-      }
-      return session;
+  socialProviders: {
+    google: {
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
     },
+    ...(process.env.AUTH_GITHUB_ID && process.env.AUTH_GITHUB_SECRET
+      ? {
+          github: {
+            clientId: process.env.AUTH_GITHUB_ID,
+            clientSecret: process.env.AUTH_GITHUB_SECRET,
+          },
+        }
+      : {}),
   },
+  plugins: [nextCookies()],
 });

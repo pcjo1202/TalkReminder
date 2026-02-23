@@ -8,7 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { authClient } from "@/shared/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 interface UserMenuProps {
   name: string | null;
@@ -17,6 +18,8 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ name, email, image }: UserMenuProps) {
+  const router = useRouter();
+
   const initials = name
     ? name
         .split(" ")
@@ -24,6 +27,11 @@ export function UserMenu({ name, email, image }: UserMenuProps) {
         .join("")
         .toUpperCase()
     : email[0].toUpperCase();
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    router.push("/");
+  };
 
   return (
     <DropdownMenu>
@@ -37,7 +45,7 @@ export function UserMenu({ name, email, image }: UserMenuProps) {
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+        <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
           로그아웃
         </DropdownMenuItem>

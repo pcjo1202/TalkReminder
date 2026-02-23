@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/shared/ui/button";
-import { signIn } from "next-auth/react";
+import { authClient } from "@/shared/lib/auth-client";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -14,9 +14,16 @@ export function SocialLoginButtons({
 }: SocialLoginButtonProps) {
   const [loading, setLoading] = useState<string | null>(null);
 
-  const handleLogin = (provider: string) => {
+  const handleLogin = async (provider: "google" | "github") => {
+    if (provider === "github") {
+      alert("GitHub 로그인은 준비 중입니다.");
+      return;
+    }
     setLoading(provider);
-    signIn(provider, { callbackUrl });
+    await authClient.signIn.social({
+      provider,
+      callbackURL: callbackUrl,
+    });
   };
 
   return (
@@ -45,7 +52,7 @@ export function SocialLoginButtons({
         ) : (
           <GithubIcon className="mr-2 h-4 w-4" />
         )}
-        GitHub로 계속하기
+        GitHub로 계속하기 (준비 중)
       </Button>
     </div>
   );

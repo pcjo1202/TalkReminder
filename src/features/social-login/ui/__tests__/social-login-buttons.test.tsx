@@ -2,8 +2,12 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { SocialLoginButtons } from "../social-login-buttons";
 
-vi.mock("next-auth/react", () => ({
-  signIn: vi.fn(),
+vi.mock("@/shared/lib/auth-client", () => ({
+  authClient: {
+    signIn: {
+      social: vi.fn(),
+    },
+  },
 }));
 
 afterEach(() => {

@@ -149,7 +149,10 @@ NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_SECRET_KEY=         # 서버 전용
 
-# NextAuth
-NEXTAUTH_SECRET=             # openssl rand -base64 32
-NEXTAUTH_URL=http://localhost:3000
+# Database
+DATABASE_URL=                # Supabase PostgreSQL 연결 문자열
+
+# Better Auth
+BETTER_AUTH_SECRET=          # openssl rand -base64 32
+BETTER_AUTH_URL=http://localhost:3000
 ```
