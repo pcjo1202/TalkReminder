@@ -6,7 +6,7 @@ import { SupabaseAdapter } from "@auth/supabase-adapter";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: SupabaseAdapter({
     url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    secret: process.env.SUPABASE_SECRET_KEY!,
   }),
   providers: [Google, GitHub],
   pages: {
