@@ -146,8 +146,8 @@ import { something } from '@/features/create-reminder'  // ✅ index.ts 경유
 ```bash
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=   # 서버 전용
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+SUPABASE_SECRET_KEY=         # 서버 전용
 
 # NextAuth
 NEXTAUTH_SECRET=             # openssl rand -base64 32
