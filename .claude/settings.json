@@ -1,0 +1,65 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dev*)",
+      "Bash(pnpm build*)",
+      "Bash(pnpm lint*)",
+      "Bash(pnpm test*)",
+      "Bash(pnpm dlx*)",
+      "Bash(npx tsc*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat); cmd=$(echo \"$input\" | jq -r '.command // empty'); if echo \"$cmd\" | grep -qE 'rm\\s+-rf|--force|--hard|git\\s+push\\s+.*main\\b|DROP\\s+TABLE|\\bnpm\\s|\\byarn\\s'; then echo \"차단: 위험 명령 또는 금지된 패키지 매니저 사용 감지 — $cmd\" >&2; exit 2; fi; exit 0",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat); file=$(echo \"$input\" | jq -r '.file_path // empty'); if echo \"$file\" | grep -qE '\\.(env|pem|key)$|credentials|secrets'; then echo \"차단: 민감 파일 수정 불가 — $file\" >&2; exit 2; fi; exit 0",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx prettier --write $CLAUDE_FILE_PATHS 2>&1 | tail -5 || true",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "npx eslint $CLAUDE_FILE_PATHS 2>&1 | tail -20 || true",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx tsc --noEmit 2>&1 | tail -30; exit_code=$?; if [ $exit_code -ne 0 ]; then echo '타입 에러가 남아있습니다. 수정해주세요.' >&2; exit 1; fi",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}
