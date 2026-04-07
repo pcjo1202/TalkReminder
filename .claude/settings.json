@@ -10,6 +10,7 @@
     ]
   },
   "hooks": {
+    // PreToolUse hook: 도구 사용 전 실행
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -32,6 +33,7 @@
         ]
       }
     ],
+    // PostToolUse hook: 도구 사용 후 실행
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
@@ -49,6 +51,7 @@
         ]
       }
     ],
+    // Stop hook: 중단 시 실행
     "Stop": [
       {
         "matcher": "",
