@@ -10,7 +10,7 @@ description: better-auth 파일 위치, 세션 접근 패턴, Route Handler 보�
 - 서버 설정: `src/auth.ts`
 - 클라이언트: `src/shared/lib/auth-client.ts`
 - Route Handler: `src/app/api/auth/[...all]/route.ts`
-- 미들웨어 보호: `src/middleware.ts`
+- 라우트 보호: `src/proxy.ts` (Next.js 16 proxy)
 
 ## 세션 접근
 

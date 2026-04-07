@@ -12,6 +12,8 @@ pnpm build     # 프로덕션 빌드
 pnpm start     # 프로덕션 서버
 pnpm lint      # ESLint
 pnpm test      # Vitest
+pnpm test:watch # Vitest watch 모드
+pnpm test:ui   # Vitest UI 모드
 pnpm coverage  # 커버리지
 ```
 
@@ -26,40 +28,39 @@ pnpm coverage  # 커버리지
 - **better-auth** — 인증 (소셜 로그인, 세션 관리)
 - **Vitest + @testing-library/react** — 테스트
 
+## Next.js 16 주요 규약
+
+- **proxy.ts** — `middleware.ts` 대체. `src/proxy.ts`에서 인증 라우트 보호 (Node.js 런타임)
+- **Turbopack** — 기본 번들러. `--webpack` 플래그로 폴백 가능
+- **async params/searchParams** — 페이지 props에서 반드시 `await params`, `await searchParams`
+- **parallel routes** — 모든 슬롯에 `default.js` 필수
+- **revalidateTag()** — 2번째 인자(cacheLife profile) 필수: `revalidateTag('tag', 'max')`
+
 ## 아키텍처 (FSD)
 
 ```
 src/
 ├── app/       # 라우팅, 레이아웃, API 핸들러
-├── views/     # 페이지 단위 조합 (서버 컴포넌트)
 ├── widgets/   # 독립 복합 블록 (서버 컴포넌트)
 ├── features/  # 인터랙션 기능 ("use client" 허용)
 ├── entities/  # 도메인 모델 UI (서버 컴포넌트 전용, "use client" 금지)
 └── shared/    # ui/, lib/, hooks/, types/
 ```
 
-**핵심 원칙:**
-- `entities`는 순수 표시 전용 — `onClick`, `useState`, `useEffect` 금지
-- 인터랙션(클릭, 폼, 모달)은 `features`에서만
-- `"use client"` 경계는 최대한 아래로 (features 내부에서만 시작)
-- 의존성 방향: `app → views → widgets → features → entities → shared`
+- 의존성 방향: `app → widgets → features → entities → shared`
 - 슬라이스 외부 접근은 반드시 `index.ts`를 통해서만
+- 세부 규칙은 `.claude/rules/`와 각 슬라이스의 `CLAUDE.md` 참조
 
-→ 상세: [docs/architecture.md](docs/architecture.md)
+## Gotchas
 
-## 코드 규약
+- shadcn/ui 컴포넌트 추가: `pnpm dlx shadcn@latest add <컴포넌트명>`
+- `index.ts`에서 `export *` 금지 — 명시적 named re-export만 사용
+- React Compiler 사용 중 — `useMemo`/`useCallback` 수동 최적화 불필요
 
-**파일명:** 컴포넌트 `kebab-case.tsx`, 모듈 `kebab-case.ts`, 훅 `use-<name>.ts`
+## 참조 문서
 
-**TypeScript:** props는 `interface` 사용. `any` 금지 (불가피 시 eslint-disable 주석 필수).
-
-**컴포넌트:** shadcn/ui 우선 활용. 조건부 className은 반드시 `cn()` 사용.
-
-## 상세 문서
+> 아래 문서는 자동 로드되지 않습니다. 관련 작업 시 직접 참조하세요.
 
 - [개발 워크플로 (Skills 호출 순서)](docs/workflow.md)
-- [아키텍처 (FSD 상세)](docs/architecture.md)
-- [데이터베이스 (Supabase)](docs/database.md)
 - [인증 (better-auth)](docs/auth.md)
-- [테스트 (Vitest)](docs/testing.md)
 - [스타일링 (Tailwind v4)](docs/styling.md)

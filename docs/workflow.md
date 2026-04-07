@@ -67,14 +67,11 @@ description: 기능 개발 사이클과 각 단계에서 호출할 skill 가이�
 
 ## 설치된 로컬 Skills
 
-| 스킬 | 용도 |
-|------|------|
-| `frontend-design` | 고품질 UI 컴포넌트 생성 |
-| `vercel-react-best-practices` | React/Next.js 성능·패턴 검토 |
-| `web-design-guidelines` | 디자인 시스템 가이드라인 참조 |
-| `find-skills` | 사용 가능한 스킬 탐색 |
+| 스킬   | 용도                  |
+| ------ | --------------------- |
+| (없음) | 로컬 스킬 미설치 상태 |
 
-> 로컬 스킬 추가: `.agents/skills/<스킬명>/SKILL.md` 생성
+> 로컬 스킬 추가: `.claude/skills/<스킬명>/SKILL.md` 생성
 > 같은 작업을 3회 이상 반복하면 커스텀 스킬로 만들 것
 
 ---
