@@ -11,6 +11,10 @@ description: 기능 개발 사이클과 각 단계에서 호출할 skill 가이�
 기획 → 설계 → 구현 → 완료
 ```
 
+**사용자가 호출할 커맨드는 2개뿐이다:**
+1. `/brainstorming` — 기획+설계를 시작하면 `/writing-plans`까지 자동 연결
+2. `/dev` — 플랜이 완성되면 구현+검증+PR까지 자동 실행
+
 ---
 
 ## 1단계: 기획 (WHAT)
@@ -44,6 +48,9 @@ description: 기능 개발 사이클과 각 단계에서 호출할 skill 가이�
 > 플랜을 실행한다.
 
 ```
+# 전체 자동 실행 (이슈 → 브랜치 → 태스크별 커밋 → 검증 → PR)
+/dev
+
 # 태스크가 독립적이고 병렬 실행 가능할 때
 /subagent-driven-development
 
@@ -55,7 +62,7 @@ description: 기능 개발 사이클과 각 단계에서 호출할 skill 가이�
 
 ## 4단계: 완료
 
-> 완료라고 말하기 전에 반드시 이 순서로 실행한다.
+> `/dev` 사용 시 검증+PR이 자동 포함된다. 수동으로 진행할 경우:
 
 ```
 1. /verification-before-completion   ← 테스트/빌드 통과 확인
@@ -69,7 +76,9 @@ description: 기능 개발 사이클과 각 단계에서 호출할 skill 가이�
 
 | 스킬   | 용도                  |
 | ------ | --------------------- |
-| (없음) | 로컬 스킬 미설치 상태 |
+| `/dev` | 플랜 자동 실행 (이슈→브랜치→구현→커밋→PR) |
+| `/git` | git 작업 자동화 (이슈, 커밋, PR) |
+| `/make-component` | FSD 컴포넌트 생성 |
 
 > 로컬 스킬 추가: `.claude/skills/<스킬명>/SKILL.md` 생성
 > 같은 작업을 3회 이상 반복하면 커스텀 스킬로 만들 것
@@ -81,6 +90,7 @@ description: 기능 개발 사이클과 각 단계에서 호출할 skill 가이�
 ```
 기능 설계 시작          → /brainstorming
 구현 플랜 필요          → /writing-plans
+플랜 자동 실행          → /dev
 병렬 구현               → /subagent-driven-development
 UI 작업                 → /frontend-design:frontend-design
 완료 전 검증            → /verification-before-completion
