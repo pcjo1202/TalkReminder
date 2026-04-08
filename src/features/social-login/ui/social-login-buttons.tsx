@@ -14,20 +14,37 @@ export function SocialLoginButtons({
 }: SocialLoginButtonProps) {
   const [loading, setLoading] = useState<string | null>(null);
 
-  const handleLogin = async (provider: "google" | "github") => {
+  const handleLogin = async (provider: "google" | "github" | "kakao") => {
     if (provider === "github") {
       alert("GitHub 로그인은 준비 중입니다.");
       return;
     }
     setLoading(provider);
-    await authClient.signIn.social({
-      provider,
-      callbackURL: callbackUrl,
-    });
+    try {
+      await authClient.signIn.social({
+        provider,
+        callbackURL: callbackUrl,
+      });
+    } finally {
+      setLoading(null);
+    }
   };
 
   return (
     <div className="flex flex-col gap-3">
+      <Button
+        size="lg"
+        className="bg-[#FEE500] text-black hover:bg-[#FEE500]/90"
+        onClick={() => handleLogin("kakao")}
+        disabled={loading !== null}
+      >
+        {loading === "kakao" ? (
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <KakaoIcon className="mr-2 h-4 w-4" />
+        )}
+        카카오로 계속하기
+      </Button>
       <Button
         variant="outline"
         size="lg"
@@ -55,6 +72,19 @@ export function SocialLoginButtons({
         GitHub로 계속하기 (준비 중)
       </Button>
     </div>
+  );
+}
+
+function KakaoIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.72 1.8 5.108 4.516 6.457-.197.735-.714 2.665-.818 3.08-.128.512.188.504.394.367.163-.108 2.592-1.76 3.644-2.476.734.103 1.49.157 2.264.157 5.523 0 10-3.463 10-7.585C22 6.463 17.523 3 12 3z" />
+    </svg>
   );
 }
 
