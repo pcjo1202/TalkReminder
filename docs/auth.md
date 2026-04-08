@@ -34,7 +34,7 @@ const { data: session, isPending } = authClient.useSession()
 import { authClient } from "@/shared/lib/auth-client"
 
 await authClient.signIn.social({
-  provider: "google", // 또는 "github"
+  provider: "google", // 또는 "kakao", "github"
   callbackURL: "/dashboard",
 })
 ```
@@ -76,6 +76,13 @@ BETTER_AUTH_SECRET=    # openssl rand -base64 32
 BETTER_AUTH_URL=       # http://localhost:3000
 AUTH_GOOGLE_ID=        # Google OAuth
 AUTH_GOOGLE_SECRET=
+AUTH_KAKAO_ID=         # Kakao OAuth (REST API 키)
+AUTH_KAKAO_SECRET=     # Kakao OAuth (Client Secret)
 AUTH_GITHUB_ID=        # GitHub OAuth
 AUTH_GITHUB_SECRET=
 ```
+
+### 카카오 디벨로퍼스 설정
+
+- Redirect URI: `{BETTER_AUTH_URL}/api/auth/callback/kakao`
+- 로컬 개발: `http://localhost:3000/api/auth/callback/kakao`
