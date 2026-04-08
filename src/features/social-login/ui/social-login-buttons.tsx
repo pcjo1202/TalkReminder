@@ -20,10 +20,14 @@ export function SocialLoginButtons({
       return;
     }
     setLoading(provider);
-    await authClient.signIn.social({
-      provider,
-      callbackURL: callbackUrl,
-    });
+    try {
+      await authClient.signIn.social({
+        provider,
+        callbackURL: callbackUrl,
+      });
+    } finally {
+      setLoading(null);
+    }
   };
 
   return (
