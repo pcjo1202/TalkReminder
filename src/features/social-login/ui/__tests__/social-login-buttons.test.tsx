@@ -12,11 +12,15 @@ vi.mock("@/shared/lib/auth-client", () => ({
 
 afterEach(() => {
   cleanup();
+  vi.clearAllMocks();
 });
 
 describe("SocialLoginButtons", () => {
-  it("renders Google and GitHub login buttons", () => {
+  it("카카오, Google, GitHub 로그인 버튼을 렌더링한다", () => {
     render(<SocialLoginButtons />);
+    expect(
+      screen.getByRole("button", { name: /카카오로 계속하기/i })
+    ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Google로 계속하기/i })
     ).toBeInTheDocument();
